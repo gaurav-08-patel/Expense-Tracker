@@ -7,12 +7,12 @@ import { View } from "react-native";
 export default function RootLayout() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <View style={{ flex: 1, backgroundColor: "#fff" }}>
+            <View style={{ flex: 1, backgroundColor: "#f8fafc" }}>
                 <SafeAreaProvider>
                     <Stack
                         screenOptions={{
                             headerShown: false,
-                            contentStyle: { backgroundColor: "#fff" },
+                            contentStyle: { backgroundColor: "#f8fafc" },
                         }}
                     />
                 </SafeAreaProvider>
