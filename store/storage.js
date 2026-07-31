@@ -1,38 +1,64 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const TRACKERS_KEY = "trackers";
-const EXPENSES_KEY = "expenses";
+export const TRACKERS_KEY = "trackers";
+export const EXPENSES_KEY = "expenses";
 
-
-async function getValue(key) {
+export async function getValue(key) {
     try {
-        const value = await AsyncStorage.getItem(key);
-        return value;
+        return await AsyncStorage.getItem(key);
     } catch (error) {
         console.warn(`Failed to read storage key: ${key}`, error);
         return null;
     }
 }
 
-export async function saveExpenses(expenses) {
-    await setValue(EXPENSES_KEY, JSON.stringify(expenses));
+export async function setValue(key, value) {
+    try {
+        await AsyncStorage.setItem(key, value);
+    } catch (error) {
+        console.warn(`Failed to write storage key: ${key}`, error);
+    }
 }
-export async function saveTrackers(trackers) {
-    await setValue(TRACKERS_KEY, JSON.stringify(trackers));
+
+export async function removeValue(key) {
+    try {
+        await AsyncStorage.removeItem(key);
+    } catch (error) {
+        console.warn(`Failed to remove storage key: ${key}`, error);
+    }
 }
 
+export async function loadTrackers() {
+    const value = await getValue(TRACKERS_KEY);
 
-export async function getExpensesByTrackerId(trackerId) {
-    const values = await getValue(EXPENSES_KEY);
-
-    if (!values) {
+    if (!value) {
         return [];
     }
 
     try {
-        const parsed = JSON.parse(values);
-        let filtered = parsed.filter(expense => expense.trackerId === trackerId);
-        return filtered;
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.warn("Failed to parse saved trackers", error);
+        return [];
+    }
+}
+
+export async function saveTrackers(trackers) {
+    await setValue(TRACKERS_KEY, JSON.stringify(trackers));
+}
+
+export async function getExpensesByTrackerId(trackerId) {
+    const value = await getValue(EXPENSES_KEY);
+
+    if (!value) {
+        return [];
+    }
+
+    try {
+        const parsed = JSON.parse(value);
+        const expenses = Array.isArray(parsed) ? parsed : [];
+        return expenses.filter((expense) => expense.trackerId === trackerId);
     } catch (error) {
         console.warn(
             `Failed to parse saved expenses for tracker ${trackerId}`,
@@ -42,44 +68,29 @@ export async function getExpensesByTrackerId(trackerId) {
     }
 }
 
-export async function getTrackersCount() {
-    const values = await getValue(TRACKERS_KEY);
-    if (!values) {
-        return 0;
-    }
-    const parsed = JSON.parse(values);
-    return parsed.length;
-}
-
-export async function addNewTracker(tracker) {
-    const values = await getValue(TRACKERS_KEY);
-    const parsed = JSON.parse(values);
-    parsed.unshift(tracker);
-    await saveTrackers(parsed);
-}
-
-export async function addNewExpense(expense) {
-    const values = await getValue(EXPENSES_KEY);
-    const parsed = JSON.parse(values);
-    parsed.unshift(expense);
-    await saveExpenses(parsed);
-}
-
 export async function getMoneySpent(trackerId) {
     const expenses = await getExpensesByTrackerId(trackerId);
-    return expenses.reduce((acc, expense) => acc + expense.amount, 0);
-};
+    return expenses.reduce(
+        (total, expense) => total + Number(expense.amount || 0),
+        0,
+    );
+}
 
 export async function getExpensesCount(trackerId) {
     const expenses = await getExpensesByTrackerId(trackerId);
     return expenses.length;
-};
+}
 
-console.log("hello");
-(async () => {
-    const expenses = await getMoneySpent("a1b2c3");
-    console.log("t",expenses);
+export async function addNewTracker(tracker) {
+    const trackers = await loadTrackers();
+    trackers.unshift(tracker);
+    await saveTrackers(trackers);
+}
 
-})();
-
-export { TRACKERS_KEY, EXPENSES_KEY };
+export async function addNewExpense(expense) {
+    const value = await getValue(EXPENSES_KEY);
+    const expenses = value ? JSON.parse(value) : [];
+    const nextExpenses = Array.isArray(expenses) ? expenses : [];
+    nextExpenses.unshift(expense);
+    await setValue(EXPENSES_KEY, JSON.stringify(nextExpenses));
+}
