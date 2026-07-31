@@ -11,6 +11,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TrackerCard from "../components/TrackerCard";
 import { getValue } from "../store/storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
     const [trackers, setTrackers] = useState([]);
@@ -47,96 +48,96 @@ export default function HomeScreen() {
     }, []);
 
     return (
-        <View className="flex-1 bg-slate-50">
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 140 }}
-                className="flex-1"
-            >
-                <View className="border-b border-slate-200 bg-white px-5 pb-5 pt-4 shadow-sm">
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+            <View className="flex-1 bg-slate-100">
+                <View className="border-b border-slate-200 bg-white px-5 pb-2 shadow-sm">
                     <View className="flex-row items-center justify-between">
-                        <View className="flex-row items-center gap-3">
+                        <View className="flex-row items-center gap-2">
                             <Image
                                 source={require("../public/logo.png")}
-                                resizeMode="contain"
-                                style={{ width: 34, height: 34 }}
+                                resizeMode="cover"
+                                style={{ width: 60, height: 60 }}
+                                className=" -ml-4"
                             />
-                            <Text className="text-[22px] font-bold text-blue-900">
+                            <Text className="text-[26px] font-bold text-blue-900">
                                 ExpenseTracker
                             </Text>
                         </View>
-
-                        <Pressable className="h-11 w-11 items-center justify-center rounded-full">
-                            <MaterialCommunityIcons
-                                name="bell-outline"
-                                size={30}
-                                color="#0f172a"
-                            />
-                        </Pressable>
                     </View>
                 </View>
-
-                <View className="px-5 pt-8">
-                    <Text className="text-[34px] font-semibold text-slate-950">
-                        My Trackers
-                    </Text>
-                    <Text className="mt-2 text-[18px] text-slate-500">
-                        {trackers.length} active trackers
-                    </Text>
-
-                    <View className="mt-8">
-                        {loading ? (
-                            <View className="items-center justify-center py-20">
-                                <ActivityIndicator
-                                    size="large"
-                                    color="#2563eb"
-                                />
-                            </View>
-                        ) : trackers.length > 0 ? (
-                            trackers.map((tracker) => (
-                                <TrackerCard key={tracker.id} data={tracker} />
-                            ))
-                        ) : (
-                            <View className="rounded-[28px] bg-white px-6 py-10">
-                                <Text className="text-center text-[18px] text-slate-500">
-                                    No trackers found.
-                                </Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
-            </ScrollView>
-
-            <Pressable
-                onPressIn={() => {
-                    Animated.spring(addButtonScale, {
-                        toValue: 0.94,
-                        useNativeDriver: true,
-                        speed: 20,
-                        bounciness: 0,
-                    }).start();
-                }}
-                onPressOut={() => {
-                    Animated.spring(addButtonScale, {
-                        toValue: 1,
-                        useNativeDriver: true,
-                        speed: 20,
-                        bounciness: 0,
-                    }).start();
-                }}
-                className="absolute bottom-24 left-5"
-            >
-                <Animated.View
-                    style={{ transform: [{ scale: addButtonScale }] }}
-                    className="h-[74px] w-[74px] items-center justify-center rounded-full bg-cyan-700 shadow-lg"
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 140 }}
+                    className="flex-1"
                 >
-                    <MaterialCommunityIcons
-                        name="plus"
-                        size={42}
-                        color="#ffffff"
-                    />
-                </Animated.View>
-            </Pressable>
-        </View>
+                    <View className="px-5 pt-3">
+                        <Text className="text-[34px] font-semibold text-slate-950">
+                            My Trackers
+                        </Text>
+                        <Text className=" text-[18px] text-slate-500">
+                            {trackers.length} active trackers
+                        </Text>
+
+                        <View className="mt-8">
+                            {loading ? (
+                                <View className="items-center justify-center py-20">
+                                    <ActivityIndicator
+                                        size="large"
+                                        color="#2563eb"
+                                    />
+                                </View>
+                            ) : trackers.length > 0 ? (
+                                trackers.map((tracker) => (
+                                    <TrackerCard
+                                        key={tracker.id}
+                                        data={tracker}
+                                    />
+                                ))
+                            ) : (
+                                <View className="rounded-[28px] bg-white px-6 py-10">
+                                    <Text className="text-center text-[18px] text-slate-800">
+                                        No trackers found.
+                                    </Text>
+                                    <Text className="mt-2 text-center text-[18px] text-slate-500">
+                                        Add a new tracker to get started.
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+                </ScrollView>
+
+                <Pressable
+                    onPressIn={() => {
+                        Animated.spring(addButtonScale, {
+                            toValue: 0.94,
+                            useNativeDriver: true,
+                            speed: 20,
+                            bounciness: 0,
+                        }).start();
+                    }}
+                    onPressOut={() => {
+                        Animated.spring(addButtonScale, {
+                            toValue: 1,
+                            useNativeDriver: true,
+                            speed: 20,
+                            bounciness: 0,
+                        }).start();
+                    }}
+                    className="absolute bottom-8 right-5"
+                >
+                    <Animated.View
+                        style={{ transform: [{ scale: addButtonScale }] }}
+                        className="h-[74px] w-[74px] items-center justify-center rounded-full bg-[#5D6FD4] shadow-lg"
+                    >
+                        <MaterialCommunityIcons
+                            name="plus"
+                            size={42}
+                            color="#ffffff"
+                        />
+                    </Animated.View>
+                </Pressable>
+            </View>
+        </SafeAreaView>
     );
 }
