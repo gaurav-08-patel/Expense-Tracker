@@ -11,7 +11,7 @@ function getProgressTheme(percentage) {
     if (percentage >= 90) {
         return {
             accent: "#b91c1c",
-            accentSoft: "#fee2e2",
+            accentSoft: "#FFDAD6",
             badgeText: "#991b1b",
             badgeBorder: "#fecaca",
             track: "#fecaca",
@@ -21,7 +21,7 @@ function getProgressTheme(percentage) {
     if (percentage >= 60) {
         return {
             accent: "#f97316",
-            accentSoft: "#ffedd5",
+            accentSoft: "#FFEDD5",
             badgeText: "#c2410c",
             badgeBorder: "#fed7aa",
             track: "#e5e7eb",
@@ -30,7 +30,7 @@ function getProgressTheme(percentage) {
 
     return {
         accent: "#15803d",
-        accentSoft: "#dcfce7",
+        accentSoft: "#91F78E",
         badgeText: "#166534",
         badgeBorder: "#bbf7d0",
         track: "#e5e7eb",
@@ -94,7 +94,7 @@ export default function TrackerCard({ data }) {
                     <Text className="text-[22px] font-semibold text-slate-950">
                         {data.title}
                     </Text>
-                    <Text className="mt-1 text-[15px] text-slate-500">
+                    <Text className="text-[15px] text-slate-500">
                         {expenseCount} expenses recorded
                     </Text>
                 </View>
@@ -123,14 +123,14 @@ export default function TrackerCard({ data }) {
                 </Pressable>
             </View>
 
-            <Text className="mt-5 text-[13px] font-medium tracking-[2px] text-slate-500">
+            <Text className="mt-3 text-[13px] font-medium tracking-[2px] text-slate-500">
                 SPENT
             </Text>
 
             <View className="mt-2 flex-row items-end justify-between gap-3">
                 <Text className="flex-1 text-[29px] font-bold text-slate-950">
                     {formatCurrency(spent)}
-                    <Text className="text-[20px] font-medium text-slate-400">
+                    <Text className="text-[20px] font-[400] text-slate-600">
                         {" "}
                         / {formatCurrency(data.initialAmount)}
                     </Text>
@@ -141,7 +141,7 @@ export default function TrackerCard({ data }) {
                         backgroundColor: theme.accentSoft,
                         borderColor: theme.badgeBorder,
                     }}
-                    className="rounded-2xl border px-4 py-2"
+                    className="rounded-3xl border px-4 py-0.5"
                 >
                     <Text
                         style={{ color: theme.badgeText }}
