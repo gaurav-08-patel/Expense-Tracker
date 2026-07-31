@@ -65,9 +65,19 @@ export async function addNewExpense(expense) {
     await saveExpenses(parsed);
 }
 
+export async function getMoneySpent(trackerId) {
+    const expenses = await getExpensesByTrackerId(trackerId);
+    return expenses.reduce((acc, expense) => acc + expense.amount, 0);
+};
+
+export async function getExpensesCount(trackerId) {
+    const expenses = await getExpensesByTrackerId(trackerId);
+    return expenses.length;
+};
+
 console.log("hello");
 (async () => {
-    const expenses = await getExpensesByTrackerId("a1b2c3");
+    const expenses = await getMoneySpent("a1b2c3");
     console.log("t",expenses);
 
 })();
