@@ -94,3 +94,165 @@ export async function addNewExpense(expense) {
     nextExpenses.unshift(expense);
     await setValue(EXPENSES_KEY, JSON.stringify(nextExpenses));
 }
+
+// (async () => {
+//     await AsyncStorage.setItem(
+//         "trackers",
+//         JSON.stringify([
+//             {
+//                 id: "trk_001",
+//                 title: "Goa Trip",
+//                 initialAmount: 15000,
+//                 createdAt: "2026-07-01T10:00:00.000Z",
+//                 updatedAt: "2026-07-20T18:30:00.000Z",
+//             },
+//             {
+//                 id: "trk_002",
+//                 title: "Monthly Groceries",
+//                 initialAmount: 8000,
+//                 createdAt: "2026-07-01T09:00:00.000Z",
+//                 updatedAt: "2026-07-28T14:00:00.000Z",
+//             },
+//             {
+//                 id: "trk_003",
+//                 title: "Office Supplies",
+//                 initialAmount: 3000,
+//                 createdAt: "2026-07-10T11:15:00.000Z",
+//                 updatedAt: "2026-07-25T16:45:00.000Z",
+//             },
+//             {
+//                 id: "trk_004",
+//                 title: "Diwali Shopping",
+//                 initialAmount: 12000,
+//                 createdAt: "2026-07-22T08:00:00.000Z",
+//                 updatedAt: "2026-07-30T19:20:00.000Z",
+//             },
+//         ]),
+//     );
+
+//     await AsyncStorage.setItem(
+//         "expenses",
+//         JSON.stringify([
+//             {
+//                 id: "exp_101",
+//                 trackerId: "trk_001",
+//                 amount: 3500,
+//                 description: "Flight tickets (return)",
+//                 date: "2026-07-02T06:30:00.000Z",
+//                 createdAt: "2026-07-02T06:35:00.000Z",
+//             },
+//             {
+//                 id: "exp_102",
+//                 trackerId: "trk_001",
+//                 amount: 2200,
+//                 description: "Beach resort - 2 nights",
+//                 date: "2026-07-15T14:00:00.000Z",
+//                 createdAt: "2026-07-15T14:10:00.000Z",
+//             },
+//             {
+//                 id: "exp_103",
+//                 trackerId: "trk_001",
+//                 amount: 850,
+//                 description: "Dinner at beach shack",
+//                 date: "2026-07-15T20:00:00.000Z",
+//                 createdAt: "2026-07-15T20:05:00.000Z",
+//             },
+//             {
+//                 id: "exp_104",
+//                 trackerId: "trk_001",
+//                 amount: 600,
+//                 description: "Scooter rental - 2 days",
+//                 date: "2026-07-16T09:00:00.000Z",
+//                 createdAt: "2026-07-16T09:05:00.000Z",
+//             },
+//             {
+//                 id: "exp_105",
+//                 trackerId: "trk_001",
+//                 amount: 1300,
+//                 description: "Water sports - parasailing",
+//                 date: "2026-07-17T11:30:00.000Z",
+//                 createdAt: "2026-07-17T11:35:00.000Z",
+//             },
+//             {
+//                 id: "exp_201",
+//                 trackerId: "trk_002",
+//                 amount: 1850,
+//                 description: "Big Bazaar - weekly groceries",
+//                 date: "2026-07-05T17:00:00.000Z",
+//                 createdAt: "2026-07-05T17:10:00.000Z",
+//             },
+//             {
+//                 id: "exp_202",
+//                 trackerId: "trk_002",
+//                 amount: 420,
+//                 description: "Vegetables and fruits - local market",
+//                 date: "2026-07-12T08:30:00.000Z",
+//                 createdAt: "2026-07-12T08:35:00.000Z",
+//             },
+//             {
+//                 id: "exp_203",
+//                 trackerId: "trk_002",
+//                 amount: 1970,
+//                 description: "Monthly grocery restock",
+//                 date: "2026-07-19T18:00:00.000Z",
+//                 createdAt: "2026-07-19T18:15:00.000Z",
+//             },
+//             {
+//                 id: "exp_204",
+//                 trackerId: "trk_002",
+//                 amount: 1000,
+//                 description: "Milk and dairy subscription",
+//                 date: "2026-07-27T07:00:00.000Z",
+//                 createdAt: "2026-07-27T07:05:00.000Z",
+//             },
+//             {
+//                 id: "exp_301",
+//                 trackerId: "trk_003",
+//                 amount: 650,
+//                 description: "Printer ink cartridges",
+//                 date: "2026-07-11T10:00:00.000Z",
+//                 createdAt: "2026-07-11T10:05:00.000Z",
+//             },
+//             {
+//                 id: "exp_302",
+//                 trackerId: "trk_003",
+//                 amount: 390,
+//                 description: "Notebooks and pens - bulk pack",
+//                 date: "2026-07-18T13:20:00.000Z",
+//                 createdAt: "2026-07-18T13:25:00.000Z",
+//             },
+//             {
+//                 id: "exp_303",
+//                 trackerId: "trk_003",
+//                 amount: 800,
+//                 description: "New desk organizer",
+//                 date: "2026-07-24T15:45:00.000Z",
+//                 createdAt: "2026-07-24T15:50:00.000Z",
+//             },
+//             {
+//                 id: "exp_401",
+//                 trackerId: "trk_004",
+//                 amount: 2500,
+//                 description: "New clothes for family",
+//                 date: "2026-07-25T16:00:00.000Z",
+//                 createdAt: "2026-07-25T16:10:00.000Z",
+//             },
+//             {
+//                 id: "exp_402",
+//                 trackerId: "trk_004",
+//                 amount: 800,
+//                 description: "Diyas and decorations",
+//                 date: "2026-07-28T12:00:00.000Z",
+//                 createdAt: "2026-07-28T12:05:00.000Z",
+//             },
+//             {
+//                 id: "exp_403",
+//                 trackerId: "trk_004",
+//                 amount: 1000,
+//                 description: "Sweets and gift boxes",
+//                 date: "2026-07-30T19:00:00.000Z",
+//                 createdAt: "2026-07-30T19:20:00.000Z",
+//             },
+//         ]),
+//     );
+// })();
