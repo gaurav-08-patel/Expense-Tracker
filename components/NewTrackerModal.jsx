@@ -9,6 +9,7 @@ import {
     Keyboard,
     Dimensions,
     PanResponder,
+    BackHandler,
 } from "react-native";
 import { addNewTracker } from "../store/storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -99,6 +100,22 @@ export default function NewTrackerModal({ visible, onClose, onCreated }) {
             }
         });
     }, [visible, slide]);
+
+    useEffect(() => {
+        if (!visible) {
+            return undefined;
+        }
+
+        const subscription = BackHandler.addEventListener(
+            "hardwareBackPress",
+            () => {
+                onClose && onClose();
+                return true;
+            },
+        );
+
+        return () => subscription.remove();
+    }, [visible, onClose]);
 
     const translateYBase = slide.interpolate({
         inputRange: [0, 1],
