@@ -109,7 +109,11 @@ export default function TrackerDetailsScreen() {
             </View>
 
             <ScrollView
-                contentContainerStyle={{ padding: 16, paddingTop: 12, paddingBottom: 136 }}
+                contentContainerStyle={{
+                    padding: 16,
+                    paddingTop: 12,
+                    paddingBottom: 136,
+                }}
                 showsVerticalScrollIndicator={false}
             >
                 <View className="mb-6 rounded-[18px] bg-white border border-gray-200 p-5 shadow-[0px_12px_30px_rgba(15,23,42,0.06)]">
@@ -173,7 +177,6 @@ export default function TrackerDetailsScreen() {
                     </View>
                 </View>
 
-
                 <SpendingLineChart
                     expenses={expenses}
                     mode={mode}
@@ -183,25 +186,32 @@ export default function TrackerDetailsScreen() {
                 {/* Placeholder for additional sections (analytics, recent expenses) */}
             </ScrollView>
 
-            <View className="absolute bottom-4 left-0 right-0 px-4 pb-5 pt-3 overflow-hidden rounded-[18px]">
-                <Pressable
-                    onPress={() => {
-                        // expense creation flow is not wired yet
-                    }}
-                    android_ripple={{ color: "#b7f7b5" }}
-                    className="h-[64px] flex-row items-center justify-center rounded-[18px] bg-[#8EF08D] shadow-[0px_12px_24px_rgba(34,197,94,0.22)]"
-                >
-                    <View className="mr-3 h-7 w-7 items-center justify-center rounded-full bg-[#006E1C]">
-                        <MaterialCommunityIcons
-                            name="plus"
-                            size={20}
-                            color="#ffffff"
-                        />
+            <View className="absolute bottom-4 left-0 right-0 px-4 pb-5 pt-3">
+                <View className="rounded-[18px] shadow-[0px_12px_24px_rgba(34,197,94,0.22)]">
+                    <View className="overflow-hidden rounded-[18px]">
+                        <Pressable
+                            onPress={() => {
+                                // expense creation flow is not wired yet
+                            }}
+                            android_ripple={{
+                                color: "#b7f7b5",
+                                borderless: false,
+                            }}
+                            className="h-[64px] flex-row items-center justify-center bg-[#8EF08D]"
+                        >
+                            <View className="mr-3 h-7 w-7 items-center justify-center rounded-full bg-[#006E1C]">
+                                <MaterialCommunityIcons
+                                    name="plus"
+                                    size={20}
+                                    color="#ffffff"
+                                />
+                            </View>
+                            <Text className="text-[18px] font-semibold text-[#154D22]">
+                                Add Expense
+                            </Text>
+                        </Pressable>
                     </View>
-                    <Text className="text-[18px] font-semibold text-[#154D22]">
-                        Add Expense
-                    </Text>
-                </Pressable>
+                </View>
             </View>
         </SafeAreaView>
     );
