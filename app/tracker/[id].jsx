@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRoute, useRouter } from "expo-router";
 import { Text, View, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect } from "react";
 import { getExpensesByTrackerId } from "../../store/storage";
+import SpendingLineChart from "../../components/SpendingLineChart";
 
 function formatCurrency(amount) {
     return `₹${Number(amount || 0).toLocaleString("en-IN")}`;
@@ -20,6 +20,9 @@ export default function TrackerDetailsScreen() {
     const data = params.data || params || {};
 
     // Polling fallback: fetch expenses immediately on mount and every 2s
+    const [expenses, setExpenses] = useState([]);
+    const [mode, setMode] = useState("week");
+
     useEffect(() => {
         let active = true;
         let timer;
@@ -27,9 +30,9 @@ export default function TrackerDetailsScreen() {
         async function fetchExpenses() {
             try {
                 if (!id) return;
-                const expenses = await getExpensesByTrackerId(String(id));
+                const exp = await getExpensesByTrackerId(String(id));
                 if (!active) return;
-                console.log(`expenses for tracker ${id}:`, expenses);
+                setExpenses(exp);
             } catch (err) {
                 console.warn("Failed to load expenses", err);
             }
@@ -169,6 +172,12 @@ export default function TrackerDetailsScreen() {
                         </View>
                     </View>
                 </View>
+
+                <SpendingLineChart
+                    expenses={expenses}
+                    mode={mode}
+                    onModeChange={setMode}
+                />
 
                 {/* Placeholder for additional sections (analytics, recent expenses) */}
             </ScrollView>
