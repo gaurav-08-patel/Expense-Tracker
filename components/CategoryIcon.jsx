@@ -6,16 +6,24 @@ const iconSets = {
     MaterialCommunityIcons,
 };
 
-export function CategoryIcon({ categoryId, size = 20 }) {
-    const category = CATEGORIES.find((c) => c.id === categoryId);
-    if (!category) return null;
+function CategoryIcon({ categoryId, size = 20 }) {
+    const category =
+        CATEGORIES.find((c) => c.id === categoryId) ||
+        CATEGORIES.find((c) => c.id === "other");
 
-    const IconComponent = iconSets[category.iconSet];
+    if (!category) {
+        return null;
+    }
+
+    const IconComponent = iconSets[category.iconSet] || Feather;
     return (
         <IconComponent
-            name={category.icon}
+            name={category.icon || "more-horizontal"}
             size={size}
             color={category.color}
         />
     );
 }
+
+export { CategoryIcon };
+export default CategoryIcon;
