@@ -97,7 +97,7 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
     return (
         <View
             style={{ borderRadius: 22, overflow: "hidden" }}
-            className="mb-6 rounded-[22px] bg-white border border-gray-200 shadow-[0px_12px_30px_rgba(15,23,42,0.1)]"
+            className="mb-4 rounded-[22px] bg-white border border-gray-200 shadow-[0px_10px_24px_rgba(15,23,42,0.08)]"
         >
             <Pressable
                 onPress={onPress}
@@ -109,21 +109,21 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
                         cursor: "pointer",
                     },
                 ]}
-                className="px-6 py-6"
+                className="px-5 py-5"
             >
                 <View className="flex-row items-start justify-between">
-                    <View className="flex-1 pr-4">
-                        <Text className="text-[22px] font-semibold text-slate-950">
+                    <View className="flex-1 pr-3">
+                        <Text className="text-[19px] font-semibold text-slate-950">
                             {data.title}
                         </Text>
-                        <Text className="text-[15px] text-slate-500">
+                        <Text className="text-[13px] text-slate-500">
                             {expenseCount} expenses recorded
                         </Text>
                     </View>
 
                     <View
                         style={{ overflow: "hidden", borderRadius: 999 }}
-                        className="h-10 w-10 rounded-full"
+                        className="h-9 w-9 rounded-full"
                     >
                         <Pressable
                             onPress={onMenuPress}
@@ -145,25 +145,25 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
                                     justifyContent: "center",
                                 },
                             ]}
-                            className="h-10 w-10 flex justify-center items-center"
+                            className="h-9 w-9 flex justify-center items-center"
                         >
                             <MaterialCommunityIcons
                                 name="dots-vertical"
-                                size={28}
+                                size={24}
                                 color="#334155"
                             />
                         </Pressable>
                     </View>
                 </View>
 
-                <Text className="mt-3 text-[13px] font-medium tracking-[2px] text-slate-500">
+                <Text className="mt-2.5 text-[12px] font-medium tracking-[1.5px] text-slate-500">
                     SPENT
                 </Text>
 
                 <View className="mt-2 flex-row items-end justify-between gap-3">
-                    <Text className="flex-1 text-[29px] font-bold text-slate-950">
+                    <Text className="flex-1 text-[23px] font-bold text-slate-950">
                         {formatCurrency(spent)}
-                        <Text className="text-[20px] font-[400] text-slate-600">
+                        <Text className="text-[16px] font-[400] text-slate-600">
                             {" "}
                             / {formatCurrency(data.initialAmount)}
                         </Text>
@@ -174,11 +174,11 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
                             backgroundColor: theme.accentSoft,
                             borderColor: theme.badgeBorder,
                         }}
-                        className="rounded-3xl border px-4 py-0.5"
+                        className="rounded-3xl border px-3 py-0.5"
                     >
                         <Text
                             style={{ color: theme.badgeText }}
-                            className="text-[15px] font-semibold"
+                            className="text-[13px] font-semibold"
                         >
                             {Math.round(progress)} %
                         </Text>
