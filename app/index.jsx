@@ -10,12 +10,14 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TrackerCard from "../components/TrackerCard";
+import NewTrackerModal from "../components/NewTrackerModal";
 import { getValue } from "../store/storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
     const [trackers, setTrackers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showNew, setShowNew] = useState(false);
     const addButtonScale = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
@@ -123,6 +125,7 @@ export default function HomeScreen() {
                             speed: 20,
                             bounciness: 0,
                         }).start();
+                        setShowNew(true);
                     }}
                     className="absolute bottom-8 right-5"
                 >
@@ -137,6 +140,13 @@ export default function HomeScreen() {
                         />
                     </Animated.View>
                 </Pressable>
+                <NewTrackerModal
+                    visible={showNew}
+                    onClose={() => setShowNew(false)}
+                    onCreated={(newTracker) =>
+                        setTrackers((s) => [newTracker, ...s])
+                    }
+                />
             </View>
         </SafeAreaView>
     );
