@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getExpensesByTrackerId } from "../../store/storage";
 import SpendingLineChart from "../../components/SpendingLineChart";
+import ExpenseCard from "../../components/ExpenseCard";
 
 function formatCurrency(amount) {
     return `₹${Number(amount || 0).toLocaleString("en-IN")}`;
@@ -62,6 +63,7 @@ export default function TrackerDetailsScreen() {
         (data.themeAccent || data.themeTrack
             ? { accent: data.themeAccent, track: data.themeTrack }
             : { accent: "#15803d", track: "#e5e7eb" });
+    const recentExpenses = expenses.slice(0, 5);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
@@ -183,7 +185,41 @@ export default function TrackerDetailsScreen() {
                     onModeChange={setMode}
                 />
 
-                {/* Placeholder for additional sections (analytics, recent expenses) */}
+                <View className="mt-6">
+                    <View className="mb-3 flex-row items-center justify-between">
+                        <Text className="text-[16px] font-semibold text-slate-900">
+                            Recent Expenses
+                        </Text>
+                        <View className="overflow-hidden rounded-lg">
+                            <Pressable
+                                onPress={() => {
+                                    /* list page can be wired later */
+                                }}
+                                android_ripple={{
+                                    color: "#e8edff",
+                                    borderless: false,
+                                }}
+                                className="px-2 py-1"
+                            >
+                                <Text className="text-[15px] font-medium text-[#324BBA]">
+                                    View all
+                                </Text>
+                            </Pressable>
+                        </View>
+                    </View>
+
+                    {recentExpenses.length > 0 ? (
+                        recentExpenses.map((expense) => (
+                            <ExpenseCard key={expense.id} expense={expense} />
+                        ))
+                    ) : (
+                        <View className="rounded-2xl bg-white px-4 py-5">
+                            <Text className="text-[16px] text-slate-500">
+                                No expenses yet.
+                            </Text>
+                        </View>
+                    )}
+                </View>
             </ScrollView>
 
             <View className="absolute bottom-4 left-0 right-0 px-4 pb-5 pt-3">
