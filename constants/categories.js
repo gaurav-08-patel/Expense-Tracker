@@ -17,14 +17,14 @@ export const CATEGORIES = [
         id: "shopping",
         label: "Shopping",
         icon: "shopping-bag",
-        iconSet: "MaterialCommunityIcons",
+        iconSet: "Feather",
         color: "#F59E0B",
     },
     {
         id: "transport",
         label: "Transport",
         icon: "car",
-        iconSet: "Feather",
+        iconSet: "MaterialCommunityIcons",
         color: "#3B82F6",
     },
     {
@@ -58,8 +58,8 @@ export const CATEGORIES = [
     {
         id: "travel",
         label: "Travel",
-        icon: "send",
-        iconSet: "Feather",
+        icon: "airplane",
+        iconSet: "MaterialCommunityIcons",
         color: "#10B981",
     },
     {
