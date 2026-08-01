@@ -7,8 +7,6 @@ import {
     TouchableWithoutFeedback,
     View,
     Keyboard,
-    KeyboardAvoidingView,
-    Platform,
     Dimensions,
     PanResponder,
 } from "react-native";
@@ -189,120 +187,112 @@ export default function NewTrackerModal({ visible, onClose, onCreated }) {
                     zIndex: 50,
                 }}
             >
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 80}
-                    style={{ flex: 1 }}
-                >
-                    <View className="flex-1 justify-end">
-                        <View
-                            style={{
-                                transform: [],
-                            }}
-                            className="bg-white rounded-t-3xl px-6 pb-6 pt-1 shadow-lg h-[90%]"
-                        >
-                            <View {...panResponder.panHandlers}>
-                                <View className="w-full items-center mt-2">
-                                    <Animated.View
-                                        style={{
-                                            width: 64,
-                                            height: 6,
-                                            borderRadius: 4,
-                                            backgroundColor: "#E6E6E6",
-                                        }}
+                <View className="flex-1 justify-end">
+                    <View
+                        style={{
+                            transform: [],
+                        }}
+                        className="bg-white rounded-t-3xl px-6 pb-6 pt-1 shadow-lg h-[90%]"
+                    >
+                        <View {...panResponder.panHandlers}>
+                            <View className="w-full items-center mt-2">
+                                <Animated.View
+                                    style={{
+                                        width: 64,
+                                        height: 6,
+                                        borderRadius: 4,
+                                        backgroundColor: "#E6E6E6",
+                                    }}
+                                />
+                            </View>
+                            <View className="justify-center pt-2">
+                                <Text className="text-[20px] font-bold text-center text-[#24389C]">
+                                    New Tracker
+                                </Text>
+                            </View>
+                        </View>
+
+                        <View className="mt-4 rounded-xl bg-[#ECFDF5] px-6 py-6">
+                            <View className="items-center">
+                                <View className="h-16 w-16 rounded-full bg-[#BBF7D0] items-center justify-center">
+                                    <MaterialCommunityIcons
+                                        name="wallet"
+                                        size={28}
+                                        color="#166534"
                                     />
                                 </View>
-                                <View className="justify-center pt-2">
-                                    <Text className="text-[20px] font-bold text-center text-[#24389C]">
-                                        New Tracker
-                                    </Text>
-                                </View>
+                                <Text className="mt-3 text-[14px] font-semibold text-[#24389C]">
+                                    PLAN AHEAD
+                                </Text>
                             </View>
+                        </View>
 
-                            <View className="mt-4 rounded-xl bg-[#ECFDF5] px-6 py-6">
-                                <View className="items-center">
-                                    <View className="h-16 w-16 rounded-full bg-[#BBF7D0] items-center justify-center">
-                                        <MaterialCommunityIcons
-                                            name="wallet"
-                                            size={28}
-                                            color="#166534"
-                                        />
-                                    </View>
-                                    <Text className="mt-3 text-[14px] font-semibold text-[#24389C]">
-                                        PLAN AHEAD
-                                    </Text>
-                                </View>
-                            </View>
+                        <View className="mt-6 flex-1">
+                            <Text className="text-[14px] text-slate-700 mb-2">
+                                Tracker Title
+                            </Text>
+                            <TextInput
+                                value={title}
+                                onChangeText={(t) => {
+                                    setTitle(t);
+                                    if (titleError) setTitleError("");
+                                }}
+                                placeholder="e.g. Goa Trip, Monthly Groceries"
+                                className="bg-gray-50 rounded-xl px-4 py-5 text-[16px]"
+                            />
+                            {titleError ? (
+                                <Text className="mt-2 text-[13px] text-red-600">
+                                    {titleError}
+                                </Text>
+                            ) : null}
 
-                            <View className="mt-6 flex-1">
-                                <Text className="text-[14px] text-slate-700 mb-2">
-                                    Tracker Title
+                            <Text className="mt-6 text-[14px] text-slate-700 mb-2">
+                                Initial Amount
+                            </Text>
+                            <View className="bg-gray-50 rounded-xl px-4 flex-row items-center">
+                                <Text className="text-[20px] text-[#006E1C]">
+                                    ₹
                                 </Text>
                                 <TextInput
-                                    value={title}
-                                    onChangeText={(t) => {
-                                        setTitle(t);
-                                        if (titleError) setTitleError("");
+                                    value={amount}
+                                    onChangeText={(v) => {
+                                        setAmount(v);
+                                        if (amountError) setAmountError("");
                                     }}
-                                    placeholder="e.g. Goa Trip, Monthly Groceries"
-                                    className="bg-gray-50 rounded-xl px-4 py-5 text-[16px]"
+                                    placeholder="0.00"
+                                    placeholderTextColor="#94a3b8"
+                                    keyboardType="numeric"
+                                    className="ml text-[26px] font-semibold flex-1 text-gray-500"
                                 />
-                                {titleError ? (
-                                    <Text className="mt-2 text-[13px] text-red-600">
-                                        {titleError}
-                                    </Text>
-                                ) : null}
-
-                                <Text className="mt-6 text-[14px] text-slate-700 mb-2">
-                                    Initial Amount
-                                </Text>
-                                <View className="bg-gray-50 rounded-xl px-4 flex-row items-center">
-                                    <Text className="text-[20px] text-[#006E1C]">
-                                        ₹
-                                    </Text>
-                                    <TextInput
-                                        value={amount}
-                                        onChangeText={(v) => {
-                                            setAmount(v);
-                                            if (amountError) setAmountError("");
-                                        }}
-                                        placeholder="0.00"
-                                        placeholderTextColor="#94a3b8"
-                                        keyboardType="numeric"
-                                        className="ml text-[26px] font-semibold flex-1 text-gray-500"
-                                    />
-                                </View>
-                                {amountError ? (
-                                    <Text className="mt-2 text-[13px] text-red-600">
-                                        {amountError}
-                                    </Text>
-                                ) : (
-                                    <Text className="mt-2 text-[13px] text-slate-400">
-                                        You can add expenses to this tracker
-                                        anytime after creating it.
-                                    </Text>
-                                )}
                             </View>
-
-                            <Pressable
-                                onPress={handleCreate}
-                                disabled={submitting}
-                                className="mb-2 rounded-3xl bg-green-700 px-5 py-4 flex-row items-center justify-center gap-3"
-                            >
-                                <Text className="text-white text-[18px] font-semibold">
-                                    {submitting
-                                        ? "Creating..."
-                                        : "Create Tracker"}
+                            {amountError ? (
+                                <Text className="mt-2 text-[13px] text-red-600">
+                                    {amountError}
                                 </Text>
-                                <MaterialCommunityIcons
-                                    name="chevron-right"
-                                    size={30}
-                                    color="#fff"
-                                />
-                            </Pressable>
+                            ) : (
+                                <Text className="mt-2 text-[13px] text-slate-400">
+                                    You can add expenses to this tracker anytime
+                                    after creating it.
+                                </Text>
+                            )}
                         </View>
+
+                        <Pressable
+                            onPress={handleCreate}
+                            disabled={submitting}
+                            className="mb-2 rounded-3xl bg-green-700 px-5 py-4 flex-row items-center justify-center gap-3"
+                        >
+                            <Text className="text-white text-[18px] font-semibold">
+                                {submitting ? "Creating..." : "Create Tracker"}
+                            </Text>
+                            <MaterialCommunityIcons
+                                name="chevron-right"
+                                size={30}
+                                color="#fff"
+                            />
+                        </Pressable>
                     </View>
-                </KeyboardAvoidingView>
+                </View>
             </Animated.View>
         </>
     );
