@@ -49,8 +49,8 @@ export default function HomeScreen() {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-            <View className="flex-1 bg-slate-100">
-                <View className="border-b border-slate-200 bg-white px-5 pb-2 shadow-sm">
+            <View className="flex-1 bg-[#F8F9FA]">
+                <View className="border-b-2 border-slate-200 bg-[#F8F9FA] px-5 pb-1 shadow-sm">
                     <View className="flex-row items-center justify-between">
                         <View className="flex-row items-center gap-2">
                             <Image

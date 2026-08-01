@@ -37,11 +37,13 @@ function getProgressTheme(percentage) {
     };
 }
 
-export default function TrackerCard({ data }) {
+export default function TrackerCard({
+    data,
+    onPress = () => {},
+    onMenuPress = () => {},
+}) {
     const [spent, setSpent] = useState(0);
     const [expenseCount, setExpenseCount] = useState(0);
-    const [pressed, setPressed] = useState(false);
-    const [menuPressed, setMenuPressed] = useState(false);
 
     useEffect(() => {
         let active = true;
@@ -76,94 +78,112 @@ export default function TrackerCard({ data }) {
     }, [spent, data.initialAmount]);
 
     const theme = getProgressTheme(progress);
-    const barWidth = `${progress}%`;
+    const barWidth = progress >= 100 ? "100%" : `${progress}%`;
 
     return (
-        <Pressable
-            onPressIn={() => setPressed(true)}
-            onPressOut={() => setPressed(false)}
-            style={({ pressed: isPressed }) => [
-                {
-                    transform: [{ scale: pressed || isPressed ? 0.98 : 1 }],
-                },
-            ]}
-            className="mb-6 rounded-[28px] bg-white px-6 py-6 shadow-[0px_12px_30px_rgba(15,23,42,0.08)]"
+        <View
+            style={{ borderRadius: 22, overflow: "hidden" }}
+            className="mb-6 rounded-[22px] bg-white border border-gray-200 shadow-[0px_12px_30px_rgba(15,23,42,0.1)]"
         >
-            <View className="flex-row items-start justify-between">
-                <View className="flex-1 pr-4">
-                    <Text className="text-[22px] font-semibold text-slate-950">
-                        {data.title}
-                    </Text>
-                    <Text className="text-[15px] text-slate-500">
-                        {expenseCount} expenses recorded
-                    </Text>
+            <Pressable
+                onPress={onPress}
+                android_ripple={{ color: "#e6e6e6", borderless: false }}
+                style={({ pressed: isPressed }) => [
+                    {
+                        transform: [{ scale: isPressed ? 0.98 : 1 }],
+                        backgroundColor: isPressed ? "#f8fafc" : "#ffffff",
+                        cursor: "pointer",
+                    },
+                ]}
+                className="px-6 py-6"
+            >
+                <View className="flex-row items-start justify-between">
+                    <View className="flex-1 pr-4">
+                        <Text className="text-[22px] font-semibold text-slate-950">
+                            {data.title}
+                        </Text>
+                        <Text className="text-[15px] text-slate-500">
+                            {expenseCount} expenses recorded
+                        </Text>
+                    </View>
+
+                    <View
+                        style={{ overflow: "hidden", borderRadius: 999 }}
+                        className="h-10 w-10 rounded-full"
+                    >
+                        <Pressable
+                            onPress={onMenuPress}
+                            android_ripple={{
+                                color: "#e6e7eb",
+                                borderless: false,
+                            }}
+                            style={({ pressed: isPressed }) => [
+                                {
+                                    backgroundColor: isPressed
+                                        ? "#e5e7eb"
+                                        : "transparent",
+                                    transform: [
+                                        { scale: isPressed ? 0.96 : 1 },
+                                    ],
+                                    cursor: "pointer",
+                                    flex: 1,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                },
+                            ]}
+                            className="h-10 w-10 flex justify-center items-center"
+                        >
+                            <MaterialCommunityIcons
+                                name="dots-vertical"
+                                size={28}
+                                color="#334155"
+                            />
+                        </Pressable>
+                    </View>
                 </View>
 
-                <Pressable
-                    onPressIn={() => setMenuPressed(true)}
-                    onPressOut={() => setMenuPressed(false)}
-                    style={({ pressed: isPressed }) => [
-                        {
-                            backgroundColor:
-                                menuPressed || isPressed
-                                    ? "#e5e7eb"
-                                    : "transparent",
-                            transform: [
-                                { scale: menuPressed || isPressed ? 0.96 : 1 },
-                            ],
-                        },
-                    ]}
-                    className="h-10 w-10 items-center justify-center rounded-full"
-                >
-                    <MaterialCommunityIcons
-                        name="dots-vertical"
-                        size={28}
-                        color="#334155"
-                    />
-                </Pressable>
-            </View>
-
-            <Text className="mt-3 text-[13px] font-medium tracking-[2px] text-slate-500">
-                SPENT
-            </Text>
-
-            <View className="mt-2 flex-row items-end justify-between gap-3">
-                <Text className="flex-1 text-[29px] font-bold text-slate-950">
-                    {formatCurrency(spent)}
-                    <Text className="text-[20px] font-[400] text-slate-600">
-                        {" "}
-                        / {formatCurrency(data.initialAmount)}
-                    </Text>
+                <Text className="mt-3 text-[13px] font-medium tracking-[2px] text-slate-500">
+                    SPENT
                 </Text>
 
-                <View
-                    style={{
-                        backgroundColor: theme.accentSoft,
-                        borderColor: theme.badgeBorder,
-                    }}
-                    className="rounded-3xl border px-4 py-0.5"
-                >
-                    <Text
-                        style={{ color: theme.badgeText }}
-                        className="text-[15px] font-semibold"
-                    >
-                        {Math.round(progress)} %
+                <View className="mt-2 flex-row items-end justify-between gap-3">
+                    <Text className="flex-1 text-[29px] font-bold text-slate-950">
+                        {formatCurrency(spent)}
+                        <Text className="text-[20px] font-[400] text-slate-600">
+                            {" "}
+                            / {formatCurrency(data.initialAmount)}
+                        </Text>
                     </Text>
-                </View>
-            </View>
 
-            <View
-                style={{ backgroundColor: theme.track }}
-                className="mt-5 h-[10px] overflow-hidden rounded-full"
-            >
+                    <View
+                        style={{
+                            backgroundColor: theme.accentSoft,
+                            borderColor: theme.badgeBorder,
+                        }}
+                        className="rounded-3xl border px-4 py-0.5"
+                    >
+                        <Text
+                            style={{ color: theme.badgeText }}
+                            className="text-[15px] font-semibold"
+                        >
+                            {Math.round(progress)} %
+                        </Text>
+                    </View>
+                </View>
+
                 <View
-                    style={{
-                        backgroundColor: theme.accent,
-                        width: barWidth,
-                    }}
-                    className="h-full rounded-full"
-                />
-            </View>
-        </Pressable>
+                    style={{ backgroundColor: theme.track }}
+                    className="mt-3 h-[10px] overflow-hidden rounded-full"
+                >
+                    <View
+                        style={{
+                            backgroundColor: theme.accent,
+                            width: barWidth,
+                        }}
+                        className="h-full rounded-full"
+                    />
+                </View>
+            </Pressable>
+        </View>
     );
 }
