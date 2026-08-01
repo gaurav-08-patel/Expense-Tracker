@@ -3,6 +3,8 @@ import { useRoute, useRouter } from "expo-router";
 import { Text, View, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useEffect } from "react";
+import { getExpensesByTrackerId } from "../../store/storage";
 
 function formatCurrency(amount) {
     return `₹${Number(amount || 0).toLocaleString("en-IN")}`;
@@ -16,19 +18,41 @@ export default function TrackerDetailsScreen() {
     // data may be passed as `params.data` or flattened in `params` depending on router.push usage
     const params = route.params || {};
     const data = params.data || params || {};
-    console.log("data", id);
+
+    // Polling fallback: fetch expenses immediately on mount and every 2s
+    useEffect(() => {
+        let active = true;
+        let timer;
+
+        async function fetchExpenses() {
+            try {
+                if (!id) return;
+                const expenses = await getExpensesByTrackerId(String(id));
+                if (!active) return;
+                console.log(`expenses for tracker ${id}:`, expenses);
+            } catch (err) {
+                console.warn("Failed to load expenses", err);
+            }
+        }
+
+        // initial fetch
+        fetchExpenses();
+
+        // poll while screen is mounted
+        timer = setInterval(fetchExpenses, 2000);
+
+        return () => {
+            active = false;
+            if (timer) clearInterval(timer);
+        };
+    }, [id]);
 
     const initial = Number(data.initialAmount || data.initial || 0);
     const spent = Number(data.moneySpent || 0);
     const left = initial - spent;
 
     // derive percentage from passed barWidth or compute
-    let percent = 0;
-    if (typeof data.barWidth === "string" && data.barWidth.includes("%")) {
-        percent = Number(data.barWidth.replace("%", "")) || 0;
-    } else if (initial > 0) {
-        percent = Math.min((spent / initial) * 100, 100);
-    }
+    let percent = (spent / initial) * 100;
 
     const theme =
         data.theme ||
@@ -127,7 +151,7 @@ export default function TrackerDetailsScreen() {
                                             backgroundColor: theme.accent,
                                             width:
                                                 data.barWidth ||
-                                                `${Math.round(percent)}%`,
+                                                `${Math.round(data.barWidth)}`,
                                         }}
                                         className="h-full rounded-full"
                                     />
