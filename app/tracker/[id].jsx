@@ -193,7 +193,10 @@ export default function TrackerDetailsScreen() {
                         <View className="overflow-hidden rounded-lg">
                             <Pressable
                                 onPress={() => {
-                                    /* list page can be wired later */
+                                    router.push({
+                                        pathname: "/tracker/all-expenses",
+                                        params: { id: String(id || "") },
+                                    });
                                 }}
                                 android_ripple={{
                                     color: "#e8edff",
