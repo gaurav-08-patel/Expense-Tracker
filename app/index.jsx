@@ -52,16 +52,16 @@ export default function HomeScreen() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
             <View className="flex-1 bg-[#F8F9FA]">
-                <View className="border-b-2 border-slate-200 bg-[#F8F9FA] px-5 pb-1 shadow-sm">
+                <View className="border-b border-slate-200 bg-[#F8F9FA] px-4 pb-2 shadow-sm">
                     <View className="flex-row items-center justify-between">
                         <View className="flex-row items-center gap-2">
                             <Image
                                 source={require("../public/logo.png")}
                                 resizeMode="cover"
-                                style={{ width: 60, height: 60 }}
-                                className=" -ml-4"
+                                style={{ width: 52, height: 52 }}
+                                className="-ml-2"
                             />
-                            <Text className="text-[26px] font-bold text-blue-900">
+                            <Text className="text-[22px] font-bold text-blue-900">
                                 ExpenseTracker
                             </Text>
                         </View>
@@ -72,15 +72,15 @@ export default function HomeScreen() {
                     contentContainerStyle={{ paddingBottom: 140 }}
                     className="flex-1"
                 >
-                    <View className="px-5 pt-3">
-                        <Text className="text-[34px] font-semibold text-slate-950">
+                    <View className="px-4 pt-4">
+                        <Text className="text-[28px] font-semibold text-slate-950">
                             My Trackers
                         </Text>
-                        <Text className=" text-[18px] text-slate-500">
+                        <Text className="mt-1 text-[15px] text-slate-500">
                             {trackers.length} active trackers
                         </Text>
 
-                        <View className="mt-8">
+                        <View className="mt-6">
                             {loading ? (
                                 <View className="items-center justify-center py-20">
                                     <ActivityIndicator
@@ -96,11 +96,11 @@ export default function HomeScreen() {
                                     />
                                 ))
                             ) : (
-                                <View className="rounded-[28px] bg-white px-6 py-10">
-                                    <Text className="text-center text-[18px] text-slate-800">
+                                <View className="rounded-[24px] bg-white px-5 py-8">
+                                    <Text className="text-center text-[16px] font-medium text-slate-800">
                                         No trackers found.
                                     </Text>
-                                    <Text className="mt-2 text-center text-[18px] text-slate-500">
+                                    <Text className="mt-2 text-center text-[15px] text-slate-500">
                                         Add a new tracker to get started.
                                     </Text>
                                 </View>
