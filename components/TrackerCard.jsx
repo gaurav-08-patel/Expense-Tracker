@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getExpensesCount, getMoneySpent } from "../store/storage";
+import { router } from "expo-router";
 
 function formatCurrency(amount) {
     return `₹${Number(amount || 0).toLocaleString("en-IN")}`;
@@ -37,11 +38,7 @@ function getProgressTheme(percentage) {
     };
 }
 
-export default function TrackerCard({
-    data,
-    onPress = () => {},
-    onMenuPress = () => {},
-}) {
+export default function TrackerCard({ data, onMenuPress = () => {} }) {
     const [spent, setSpent] = useState(0);
     const [expenseCount, setExpenseCount] = useState(0);
 
@@ -79,6 +76,23 @@ export default function TrackerCard({
 
     const theme = getProgressTheme(progress);
     const barWidth = progress >= 100 ? "100%" : `${progress}%`;
+
+    function onPress() {
+        // pass important fields as route params to ensure they arrive reliably
+        router.push({
+            pathname: `/tracker/${data.id}`,
+            params: {
+                title: data.title,
+                moneySpent: spent,
+                barWidth,
+                initialAmount: data.initialAmount,
+                // pass minimal theme pieces
+                themeAccent: theme.accent,
+                themeTrack: theme.track,
+                themeName: data.themeName || "",
+            },
+        });
+    }
 
     return (
         <View
