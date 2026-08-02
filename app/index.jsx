@@ -11,6 +11,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TrackerCard from "../components/TrackerCard";
 import NewTrackerModal from "../components/NewTrackerModal";
+import ConfirmModal from "../components/ConfirmModal";
 import { getValue, saveTrackers } from "../store/storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -18,9 +19,29 @@ export default function HomeScreen() {
     const [trackers, setTrackers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showNew, setShowNew] = useState(false);
+    const [pendingDelete, setPendingDelete] = useState(null);
     const addButtonScale = useRef(new Animated.Value(1)).current;
 
+    const pendingDeleteTracker = trackers.find(
+        (tracker) => tracker.id === pendingDelete,
+    );
+
+    async function deleteTracker(trackerId) {
+        setTrackers((currentTrackers) => {
+            const filtered = currentTrackers.filter(
+                (tracker) => tracker.id !== trackerId,
+            );
+            saveTrackers(filtered);
+            return filtered;
+        });
+    }
+
     async function handleTrackerMenuAction(action, trackerId) {
+        if (action.type === "delete") {
+            setPendingDelete(trackerId);
+            return;
+        }
+
         setTrackers((currentTrackers) => {
             const updatedTrackers = currentTrackers.map((tracker) => {
                 if (tracker.id !== trackerId) {
@@ -37,14 +58,6 @@ export default function HomeScreen() {
 
                 return tracker;
             });
-
-            if (action.type === "delete") {
-                const filtered = updatedTrackers.filter(
-                    (tracker) => tracker.id !== trackerId,
-                );
-                saveTrackers(filtered);
-                return filtered;
-            }
 
             const sorted = [...updatedTrackers].sort(
                 (a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0),
@@ -188,6 +201,24 @@ export default function HomeScreen() {
                     onCreated={(newTracker) =>
                         setTrackers((s) => [newTracker, ...s])
                     }
+                />
+                <ConfirmModal
+                    visible={Boolean(pendingDelete)}
+                    title="Delete tracker"
+                    message={
+                        pendingDeleteTracker
+                            ? `Delete "${pendingDeleteTracker.title}" and all of its expenses? This cannot be undone.`
+                            : "Delete this tracker? This cannot be undone."
+                    }
+                    confirmText="Delete"
+                    cancelText="Cancel"
+                    onConfirm={() => {
+                        if (pendingDelete) {
+                            deleteTracker(pendingDelete);
+                        }
+                        setPendingDelete(null);
+                    }}
+                    onCancel={() => setPendingDelete(null)}
                 />
             </View>
         </SafeAreaView>
