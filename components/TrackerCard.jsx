@@ -64,7 +64,7 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
         return () => {
             active = false;
         };
-    }, [data.id]);
+    }, [data]);
 
     const progress = useMemo(() => {
         if (!data.initialAmount) {
