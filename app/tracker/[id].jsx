@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRoute, useRouter } from "expo-router";
 import { Text, View, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -54,17 +54,24 @@ export default function TrackerDetailsScreen() {
     }, [id]);
 
     const initial = Number(data.initialAmount || data.initial || 0);
-    const spent = Number(data.moneySpent || 0);
+    const spent = useMemo(
+        () =>
+            expenses.reduce(
+                (total, expense) => total + Number(expense.amount || 0),
+                0,
+            ),
+        [expenses],
+    );
     const left = initial - spent;
+    const percent = initial > 0 ? Math.min((spent / initial) * 100, 100) : 0;
 
-    // derive percentage from passed barWidth or compute
-    let percent = (spent / initial) * 100;
+    let theme =
+        percent > 90
+            ? { track: "#fecaca", accent: "#b91c1c" }
+            : percent > 60
+              ? { track: "#e5e7eb", accent: "#f97316" }
+              : { track: "#e5e7eb", accent: "#15803d" };
 
-    const theme =
-        data.theme ||
-        (data.themeAccent || data.themeTrack
-            ? { accent: data.themeAccent, track: data.themeTrack }
-            : { accent: "#15803d", track: "#e5e7eb" });
     const recentExpenses = expenses.slice(0, 5);
 
     return (
@@ -98,8 +105,7 @@ export default function TrackerDetailsScreen() {
                 </View>
 
                 <Pressable
-                    onPress={() => {
-                    }}
+                    onPress={() => {}}
                     android_ripple={{ color: "#e6e6e6", borderless: true }}
                     className="p-2"
                 >
@@ -160,8 +166,8 @@ export default function TrackerDetailsScreen() {
                                         style={{
                                             backgroundColor: theme.accent,
                                             width:
-                                                data.barWidth ||
-                                                `${Math.round(data.barWidth)}`,
+                                                
+                                                `${Math.round(percent)}%`,
                                         }}
                                         className="h-full rounded-full"
                                     />
