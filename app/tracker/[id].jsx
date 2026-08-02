@@ -256,6 +256,7 @@ export default function TrackerDetailsScreen() {
                 visible={expenseModalVisible}
                 trackerId={String(id || "")}
                 trackerName={data.title || "Tracker"}
+                leftAmount={left}
                 onClose={() => setExpenseModalVisible(false)}
                 onCreated={(expense) => {
                     setExpenses((current) => [expense, ...current]);
