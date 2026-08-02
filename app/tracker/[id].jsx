@@ -104,17 +104,6 @@ export default function TrackerDetailsScreen() {
                     </View>
                 </View>
 
-                <Pressable
-                    onPress={() => {}}
-                    android_ripple={{ color: "#e6e6e6", borderless: true }}
-                    className="p-2"
-                >
-                    <MaterialCommunityIcons
-                        name="dots-vertical"
-                        size={26}
-                        color="#334155"
-                    />
-                </Pressable>
             </View>
 
             <ScrollView
