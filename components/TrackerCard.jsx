@@ -116,7 +116,22 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
                         <Text className="text-[19px] font-semibold text-slate-950">
                             {data.title}
                         </Text>
-                        <Text className="text-[13px] text-slate-500">
+                        {data.isPinned ? (
+                            <View
+                                className="mt-1 flex-row items-center rounded-full bg-blue-50 px-3 py-1"
+                                style={{ width: 80 }}
+                            >
+                                <MaterialCommunityIcons
+                                    name="pin-outline"
+                                    size={14}
+                                    color="#2563eb"
+                                />
+                                <Text className="ml-1 text-[12px] font-semibold text-[#2563eb]">
+                                    Pinned
+                                </Text>
+                            </View>
+                        ) : null}
+                        <Text className="text-[13px] text-slate-500 mt-2">
                             {expenseCount} expenses recorded
                         </Text>
                     </View>
