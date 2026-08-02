@@ -282,7 +282,7 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
                     <View
                         style={{
                             position: "absolute",
-                            top: menuPosition.y + menuPosition.height + 8,
+                            top: menuPosition.y + menuPosition.height,
                             left: Math.max(12, menuPosition.x - 120),
                             width: 160,
                             overflow: "hidden",
