@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Animated, Pressable, Text, View } from "react-native";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Animated, Modal, Pressable, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getExpensesCount, getMoneySpent } from "../store/storage";
 import { router } from "expo-router";
@@ -41,6 +41,16 @@ function getProgressTheme(percentage) {
 export default function TrackerCard({ data, onMenuPress = () => {} }) {
     const [spent, setSpent] = useState(0);
     const [expenseCount, setExpenseCount] = useState(0);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuVisible, setMenuVisible] = useState(false);
+    const [menuPosition, setMenuPosition] = useState({
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+    });
+    const menuButtonRef = useRef(null);
+    const opacity = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         let active = true;
@@ -77,6 +87,25 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
     const theme = getProgressTheme(progress);
     const barWidth = progress >= 100 ? "100%" : `${progress}%`;
 
+    useEffect(() => {
+        if (menuOpen) {
+            setMenuVisible(true);
+            Animated.timing(opacity, {
+                toValue: 1,
+                duration: 180,
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(opacity, {
+                toValue: 0,
+                duration: 180,
+                useNativeDriver: true,
+            }).start(() => {
+                setMenuVisible(false);
+            });
+        }
+    }, [menuOpen, opacity]);
+
     function onPress() {
         // pass important fields as route params to ensure they arrive reliably
         router.push({
@@ -101,6 +130,7 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
         >
             <Pressable
                 onPress={onPress}
+                disabled={menuOpen}
                 android_ripple={{ color: "#e6e6e6", borderless: false }}
                 style={({ pressed: isPressed }) => [
                     {
@@ -137,11 +167,29 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
                     </View>
 
                     <View
+                        ref={menuButtonRef}
                         style={{ overflow: "hidden", borderRadius: 999 }}
                         className="h-9 w-9 rounded-full"
                     >
                         <Pressable
-                            onPress={onMenuPress}
+                            onPress={() => {
+                                if (menuOpen) {
+                                    setMenuOpen(false);
+                                    return;
+                                }
+
+                                menuButtonRef.current?.measureInWindow(
+                                    (x, y, width, height) => {
+                                        setMenuPosition({
+                                            x,
+                                            y,
+                                            width,
+                                            height,
+                                        });
+                                        setMenuOpen(true);
+                                    },
+                                );
+                            }}
                             android_ripple={{
                                 color: "#e6e7eb",
                                 borderless: false,
@@ -213,6 +261,84 @@ export default function TrackerCard({ data, onMenuPress = () => {} }) {
                     />
                 </View>
             </Pressable>
+
+            <Modal
+                visible={menuVisible}
+                transparent
+                animationType="none"
+                onRequestClose={() => setMenuOpen(false)}
+            >
+                <Animated.View
+                    style={{
+                        flex: 1,
+                        backgroundColor: "transparent",
+                        opacity,
+                    }}
+                >
+                    <Pressable
+                        style={{ flex: 1 }}
+                        onPress={() => setMenuOpen(false)}
+                    />
+                    <View
+                        style={{
+                            position: "absolute",
+                            top: menuPosition.y + menuPosition.height + 8,
+                            left: Math.max(12, menuPosition.x - 120),
+                            width: 160,
+                            overflow: "hidden",
+                        }}
+                        className="rounded-[18px] border border-slate-200 bg-white shadow-[0px_20px_35px_rgba(15,23,42,0.08)]"
+                    >
+                        <Pressable
+                            onPress={() => {
+                                setMenuOpen(false);
+                                onMenuPress({
+                                    type: data.isPinned ? "unpin" : "pin",
+                                });
+                            }}
+                            android_ripple={{
+                                color: "#e5e7eb",
+                                borderless: false,
+                            }}
+                            className="rounded-[14px] px-4 py-3"
+                        >
+                            <View className="flex-row items-center gap-3">
+                                <MaterialCommunityIcons
+                                    name={data.isPinned ? "pin-off" : "pin"}
+                                    size={18}
+                                    color="#334155"
+                                />
+                                <Text className="text-[14px] text-slate-900">
+                                    {data.isPinned ? "Unpin" : "Pin"}
+                                </Text>
+                            </View>
+                        </Pressable>
+
+                        <Pressable
+                            onPress={() => {
+                                setMenuOpen(false);
+                                onMenuPress({ type: "delete" });
+                            }}
+                            android_ripple={{
+                                color: "#fde8e8",
+                                borderless: false,
+                            }}
+                            className="mt-1 rounded-[14px] px-4 py-3"
+                        >
+                            <View className="flex-row items-center gap-3">
+                                <MaterialCommunityIcons
+                                    name="trash-can-outline"
+                                    size={18}
+                                    color="#b91c1c"
+                                />
+                                <Text className="text-[14px] font-semibold text-[#b91c1c]">
+                                    Delete
+                                </Text>
+                            </View>
+                        </Pressable>
+                    </View>
+                </Animated.View>
+            </Modal>
         </View>
     );
 }
