@@ -165,9 +165,7 @@ export default function TrackerDetailsScreen() {
                                     <View
                                         style={{
                                             backgroundColor: theme.accent,
-                                            width:
-                                                
-                                                `${Math.round(percent)}%`,
+                                            width: `${Math.round(percent)}%`,
                                         }}
                                         className="h-full rounded-full"
                                     />
@@ -236,21 +234,38 @@ export default function TrackerDetailsScreen() {
                 <View className="rounded-[18px] shadow-[0px_12px_24px_rgba(34,197,94,0.22)]">
                     <View className="overflow-hidden rounded-[18px]">
                         <Pressable
-                            onPress={() => setExpenseModalVisible(true)}
+                            onPress={() => {
+                                if (left > 0) {
+                                    setExpenseModalVisible(true);
+                                }
+                            }}
                             android_ripple={{
                                 color: "#b7f7b5",
                                 borderless: false,
                             }}
-                            className="h-[64px] flex-row items-center justify-center bg-[#8EF08D]"
+                            className={`h-[64px] flex-row items-center justify-center ${
+                                left <= 0 ? "bg-slate-300" : "bg-[#8EF08D]"
+                            }`}
+                            disabled={left <= 0}
                         >
-                            <View className="mr-3 h-7 w-7 items-center justify-center rounded-full bg-[#006E1C]">
+                            <View
+                                className={`mr-3 h-7 w-7 items-center justify-center rounded-full ${
+                                    left <= 0 ? "bg-slate-400" : "bg-[#006E1C]"
+                                }`}
+                            >
                                 <MaterialCommunityIcons
                                     name="plus"
                                     size={20}
                                     color="#ffffff"
                                 />
                             </View>
-                            <Text className="text-[18px] font-semibold text-[#154D22]">
+                            <Text
+                                className={`text-[18px] font-semibold ${
+                                    left <= 0
+                                        ? "text-slate-500"
+                                        : "text-[#154D22]"
+                                }`}
+                            >
                                 Add Expense
                             </Text>
                         </Pressable>
