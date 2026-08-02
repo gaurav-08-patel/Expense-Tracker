@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getExpensesByTrackerId } from "../../store/storage";
 import SpendingLineChart from "../../components/SpendingLineChart";
 import ExpenseCard from "../../components/ExpenseCard";
+import NewExpenseModal from "../../components/NewExpenseModal";
 
 function formatCurrency(amount) {
     return `₹${Number(amount || 0).toLocaleString("en-IN")}`;
@@ -23,6 +24,7 @@ export default function TrackerDetailsScreen() {
     // Polling fallback: fetch expenses immediately on mount and every 2s
     const [expenses, setExpenses] = useState([]);
     const [mode, setMode] = useState("week");
+    const [expenseModalVisible, setExpenseModalVisible] = useState(false);
 
     useEffect(() => {
         let active = true;
@@ -97,7 +99,6 @@ export default function TrackerDetailsScreen() {
 
                 <Pressable
                     onPress={() => {
-                        /* placeholder for menu action */
                     }}
                     android_ripple={{ color: "#e6e6e6", borderless: true }}
                     className="p-2"
@@ -229,9 +230,7 @@ export default function TrackerDetailsScreen() {
                 <View className="rounded-[18px] shadow-[0px_12px_24px_rgba(34,197,94,0.22)]">
                     <View className="overflow-hidden rounded-[18px]">
                         <Pressable
-                            onPress={() => {
-                                // expense creation flow is not wired yet
-                            }}
+                            onPress={() => setExpenseModalVisible(true)}
                             android_ripple={{
                                 color: "#b7f7b5",
                                 borderless: false,
@@ -252,6 +251,16 @@ export default function TrackerDetailsScreen() {
                     </View>
                 </View>
             </View>
+
+            <NewExpenseModal
+                visible={expenseModalVisible}
+                trackerId={String(id || "")}
+                trackerName={data.title || "Tracker"}
+                onClose={() => setExpenseModalVisible(false)}
+                onCreated={(expense) => {
+                    setExpenses((current) => [expense, ...current]);
+                }}
+            />
         </SafeAreaView>
     );
 }
