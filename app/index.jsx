@@ -90,7 +90,7 @@ export default function HomeScreen() {
         }
 
         loadTrackers();
-        let interval = setInterval(() => loadTrackers(), 2000);
+        let interval = setInterval(() => loadTrackers(), 1000);
 
         return () => {
             if (interval) clearInterval(interval);
