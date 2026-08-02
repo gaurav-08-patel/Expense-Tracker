@@ -11,7 +11,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TrackerCard from "../components/TrackerCard";
 import NewTrackerModal from "../components/NewTrackerModal";
-import { getValue } from "../store/storage";
+import { getValue, saveTrackers } from "../store/storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -19,6 +19,40 @@ export default function HomeScreen() {
     const [loading, setLoading] = useState(true);
     const [showNew, setShowNew] = useState(false);
     const addButtonScale = useRef(new Animated.Value(1)).current;
+
+    async function handleTrackerMenuAction(action, trackerId) {
+        setTrackers((currentTrackers) => {
+            const updatedTrackers = currentTrackers.map((tracker) => {
+                if (tracker.id !== trackerId) {
+                    return tracker;
+                }
+
+                if (action.type === "pin") {
+                    return { ...tracker, isPinned: true };
+                }
+
+                if (action.type === "unpin") {
+                    return { ...tracker, isPinned: false };
+                }
+
+                return tracker;
+            });
+
+            if (action.type === "delete") {
+                const filtered = updatedTrackers.filter(
+                    (tracker) => tracker.id !== trackerId,
+                );
+                saveTrackers(filtered);
+                return filtered;
+            }
+
+            const sorted = [...updatedTrackers].sort(
+                (a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0),
+            );
+            saveTrackers(sorted);
+            return sorted;
+        });
+    }
 
     useEffect(() => {
         let active = true;
@@ -95,6 +129,12 @@ export default function HomeScreen() {
                                     <TrackerCard
                                         key={tracker.id}
                                         data={tracker}
+                                        onMenuPress={(action) =>
+                                            handleTrackerMenuAction(
+                                                action,
+                                                tracker.id,
+                                            )
+                                        }
                                     />
                                 ))
                             ) : (
