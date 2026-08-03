@@ -256,6 +256,7 @@ export default function NewTrackerModal({ visible, onClose, onCreated }) {
                                 }}
                                 placeholder="e.g. Goa Trip, Monthly Groceries"
                                 className="bg-gray-50 rounded-xl px-4 py-5 text-[16px]"
+                                placeholderTextColor="#cbd5e1"
                             />
                             {titleError ? (
                                 <Text className="mt-2 text-[13px] text-red-600">
