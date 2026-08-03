@@ -7,6 +7,7 @@ import {
     ScrollView,
     Text,
     View,
+    StatusBar
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TrackerCard from "../components/TrackerCard";
@@ -100,6 +101,7 @@ export default function HomeScreen() {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+            <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
             <View className="flex-1 bg-[#F8F9FA]">
                 <View className="border-b border-slate-200 bg-[#F8F9FA] px-4 pb-2 shadow-sm">
                     <View className="flex-row items-center justify-between">

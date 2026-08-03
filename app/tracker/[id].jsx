@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useRoute, useRouter } from "expo-router";
-import { Text, View, Pressable, ScrollView } from "react-native";
+import { Text, View, Pressable, ScrollView, StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getExpensesByTrackerId } from "../../store/storage";
@@ -76,6 +76,7 @@ export default function TrackerDetailsScreen() {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
+            <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
             <View className="flex-row items-center justify-between  py-2 border-b border-gray-200 ">
                 <View className="flex-row items-center">
                     <Pressable
@@ -103,7 +104,6 @@ export default function TrackerDetailsScreen() {
                         </Text>
                     </View>
                 </View>
-
             </View>
 
             <ScrollView

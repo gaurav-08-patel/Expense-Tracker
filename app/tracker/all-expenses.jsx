@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getExpensesByTrackerId } from "../../store/storage";
@@ -81,6 +81,7 @@ export default function AllExpensesScreen() {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
+            <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
             <View className="flex-row items-center border-b border-gray-200 py-2">
                 <Pressable
                     onPress={() => router.back()}
