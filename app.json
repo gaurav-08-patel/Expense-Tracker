@@ -6,6 +6,19 @@
         "version": "1.0.0",
         "orientation": "portrait",
         "userInterfaceStyle": "light",
-        "plugins": ["expo-router"]
+        "plugins": ["expo-router"],
+        "icon": "public/icon.png",
+        "splash": {
+            "image": "public/splash_screen.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "public/icon.png",
+                "backgroundColor": "#ffffff"
+            }
+        }
     }
 }
