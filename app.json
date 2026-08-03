@@ -1,35 +1,36 @@
 {
-  "expo": {
-    "name": "Expense Tracker",
-    "slug": "expense-tracker",
-    "scheme": "expensetracker",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "light",
-    "plugins": [
-      "expo-router"
-    ],
-    "icon": "public/icon.png",
-    "splash": {
-      "image": "public/splash_screen.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "public/icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.gaurav08patel.expensetracker"
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "caef4497-b8ea-41ae-b9ac-6d614a4e6923"
-      }
+    "expo": {
+        "name": "Expense Tracker",
+        "slug": "expense-tracker",
+        "scheme": "expensetracker",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "userInterfaceStyle": "light",
+        "plugins": [
+            "expo-router",
+            [
+                "expo-splash-screen",
+                {
+                    "image": "./public/splash_screen.png",
+                    "resizeMode": "contain",
+                    "backgroundColor": "#ffffff"
+                }
+            ]
+        ],
+        "icon": "public/icon-square.png",
+        "assetBundlePatterns": ["**/*"],
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "public/icon-square.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.gaurav08patel.expensetracker"
+        },
+        "extra": {
+            "router": {},
+            "eas": {
+                "projectId": "caef4497-b8ea-41ae-b9ac-6d614a4e6923"
+            }
+        }
     }
-  }
 }
