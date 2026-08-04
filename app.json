@@ -12,7 +12,7 @@
                 "expo-splash-screen",
                 {
                     "image": "./public/splash_screen.png",
-                    "resizeMode": "contain",
+                    "resizeMode": "cover",
                     "backgroundColor": "#ffffff"
                 }
             ]
