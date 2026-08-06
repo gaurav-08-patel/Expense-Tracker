@@ -222,7 +222,7 @@ export default function HomeScreen() {
                     }}
                     onCancel={() => setPendingDelete(null)} 
                 />
-            </View>
+            </View> 
         </SafeAreaView>
     );
 }
